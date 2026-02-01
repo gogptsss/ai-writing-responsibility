@@ -1,0 +1,34 @@
+# -------------------------------------------------
+# ACRE Publishing OS (book repo) ignore rules
+# -------------------------------------------------
+
+# Build outputs
+build/
+site/
+release_bundle/
+release_bundle_*.tar.gz
+
+# Tools downloaded by CI or local
+tools/epubcheck/epubcheck.jar
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.vscode/
+.idea/
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# Node (if any)
+node_modules/
+
+# -------------------------------------------------
+# Keep QA baselines (snapshots) in git
+# -------------------------------------------------
+!build/**/qa_baseline.json
+!build/**/qa_report.json

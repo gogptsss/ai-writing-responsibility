@@ -1,0 +1,23 @@
+# Build outputs
+build/
+site/
+release_bundle/
+release_bundle_*.tar.gz
+
+# Allow QA baselines
+!build/**/qa_baseline.json
+!build/**/qa_report.json
+
+# Tools
+tools/epubcheck/epubcheck.jar
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# OS / Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

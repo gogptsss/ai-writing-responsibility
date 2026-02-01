@@ -1,0 +1,122 @@
+name: build-book-v2
+
+on:
+  push:
+    branches: ["main"]
+    tags:
+      - "v*"
+  pull_request:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            pandoc python3 make \
+            texlive-xetex texlive-fonts-recommended texlive-latex-recommended \
+            fonts-noto-cjk default-jre poppler-utils \
+            unzip curl rsync
+          python3 -m pip install --upgrade pip
+          python3 -m pip install pillow pyyaml
+
+      - name: Install EPUBCheck (tools/epubcheck/epubcheck.jar)
+        run: |
+          mkdir -p tools/epubcheck
+          EPUBCHECK_VER=5.1.0
+          curl -L -o /tmp/epubcheck.zip https://github.com/w3c/epubcheck/releases/download/v${EPUBCHECK_VER}/epubcheck-${EPUBCHECK_VER}.zip
+          unzip -q /tmp/epubcheck.zip -d /tmp/epubcheck
+          JAR=$(find /tmp/epubcheck -name "epubcheck.jar" | head -n 1)
+          cp "$JAR" tools/epubcheck/epubcheck.jar
+
+      - name: Build (ZH)
+        run: make LANG=zh all
+
+      - name: Build (EN)
+        run: make LANG=en all
+
+      - name: Build site (dashboard -> site/)
+        run: |
+          make site
+          test -f site/index.html
+          echo "site/index.html OK"
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: book-build
+          path: |
+            build/
+            release/
+            site/
+
+      # ---------------------------
+      # Release packaging (tag only)
+      # ---------------------------
+      - name: Package release bundle (tag only)
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          rm -rf release_bundle
+          mkdir -p release_bundle/zh release_bundle/en release_bundle/site
+
+          cp -f build/zh/book.pdf  build/zh/book.epub  build/zh/book.docx  release_bundle/zh/
+          cp -f build/en/book.pdf  build/en/book.epub  build/en/book.docx  release_bundle/en/
+          cp -f site/index.html release_bundle/site/
+
+          BUNDLE="release_bundle_${GITHUB_REF_NAME}.tar.gz"
+          tar -czf "$BUNDLE" release_bundle
+          echo "BUNDLE=$BUNDLE" >> $GITHUB_ENV
+          ls -lah "$BUNDLE"
+
+      - name: Create GitHub Release (tag only)
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: Release ${{ github.ref_name }}
+          body: |
+            Automated release for ${{ github.ref_name }}
+
+            Included:
+            - PDF / EPUB / DOCX (ZH & EN)
+            - Publication readiness site snapshot
+          files: |
+            ${{ env.BUNDLE }}
+
+      # ---------------------------
+      # Pages deploy (main only)
+      # ---------------------------
+      - name: Setup Pages
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
