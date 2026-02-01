@@ -32,7 +32,7 @@ $(BUILD):
 
 merge: $(BUILD)
 	@echo "==> Merging chapters (LANG=$(BOOK_LANG))..."
-	python3 scripts/build.py --lang $(BOOK_LANG) --merge-only
+	python3 scripts/build.py --lang 0 0BOOK_LANG) --merge-only
 
 qa: merge
 	@echo "==> QA (L1) (LANG=$(BOOK_LANG))..."
@@ -40,7 +40,7 @@ qa: merge
 
 qa-strict: qa pdf epub
 	@echo "==> QA_STRICT (L1+L2) (LANG=$(BOOK_LANG))..."
-	@python3 scripts/qa_strict.py --lang $(BOOK_LANG) --config config/qa_rules.yml
+	 scripts/qa_strict.py --lang $(BOOK_LANG) --config config/qa_rules.yml
 
 pdf: merge
 	@echo "==> Building PDF (LANG=$(BOOK_LANG))..."
@@ -70,7 +70,7 @@ docx: merge
 .PHONY: baseline-init
 baseline-init: qa pdf epub
 	@echo "==> Baseline init (LANG=$(BOOK_LANG))..."
-	@python3 scripts/qa_strict.py --lang $(BOOK_LANG) --config config/qa_rules.yml
+	 scripts/qa_strict.py --lang $(BOOK_LANG) --config config/qa_rules.yml
 
 .PHONY: dashboard
 dashboard:

@@ -7,10 +7,10 @@ SHELL := /usr/bin/env bash
 ROOT := $(CURDIR)
 LANG ?= zh
 
-MANUSCRIPT := $(ROOT)/manuscript/$(BOOK_LANG)
-BUILD := $(ROOT)/build/$(BOOK_LANG)
+MANUSCRIPT := $(ROOT)/manuscript/$(LANG)
+BUILD := $(ROOT)/build/$(LANG)
 
-META := $(ROOT)/metadata/book.$(BOOK_LANG).yml
+META := $(ROOT)/metadata/book.$(LANG).yml
 CSS := $(ROOT)/metadata/style.css
 TEX := $(ROOT)/templates/book.tex
 DOCX_REF := $(ROOT)/templates/reference.docx
@@ -31,19 +31,19 @@ $(BUILD):
 	mkdir -p $(BUILD)
 
 merge: $(BUILD)
-	@echo "==> Merging chapters (LANG=$(BOOK_LANG))..."
-	python3 scripts/build.py --lang $(BOOK_LANG) --merge-only
+	@echo "==> Merging chapters (LANG=$(LANG))..."
+	python3 scripts/build.py --lang en --merge-only
 
 qa: merge
-	@echo "==> QA (L1) (LANG=$(BOOK_LANG))..."
+	@echo "==> QA (L1) (LANG=$(LANG))..."
 	@python3 scripts/qa.py --input $(MERGED)
 
 qa-strict: qa pdf epub
-	@echo "==> QA_STRICT (L1+L2) (LANG=$(BOOK_LANG))..."
-	@python3 scripts/qa_strict.py --lang $(BOOK_LANG) --config config/qa_rules.yml
+	@echo "==> QA_STRICT (L1+L2) (LANG=$(LANG))..."
+	@python3 scripts/qa_strict.py --lang 0 0BOOK_LANG) --config config/qa_rules.yml
 
 pdf: merge
-	@echo "==> Building PDF (LANG=$(BOOK_LANG))..."
+	@echo "==> Building PDF (LANG=$(LANG))..."
 	@pandoc $(MERGED) \
 		--metadata-file $(META) \
 		--pdf-engine=xelatex \
@@ -53,7 +53,7 @@ pdf: merge
 		--output $(PDF)
 
 epub: merge
-	@echo "==> Building EPUB (LANG=$(BOOK_LANG))..."
+	@echo "==> Building EPUB (LANG=$(LANG))..."
 	@pandoc $(MERGED) \
 		--metadata-file $(META) \
 		--css $(CSS) \
@@ -61,7 +61,7 @@ epub: merge
 		--output $(EPUB)
 
 docx: merge
-	@echo "==> Building DOCX (LANG=$(BOOK_LANG))..."
+	@echo "==> Building DOCX (LANG=$(LANG))..."
 	@pandoc $(MERGED) \
 		--metadata-file $(META) \
 		--reference-doc $(DOCX_REF) \
@@ -69,8 +69,8 @@ docx: merge
 
 .PHONY: baseline-init
 baseline-init: qa pdf epub
-	@echo "==> Baseline init (LANG=$(BOOK_LANG))..."
-	@python3 scripts/qa_strict.py --lang $(BOOK_LANG) --config config/qa_rules.yml
+	@echo "==> Baseline init (LANG=$(LANG))..."
+	@python3 scripts/qa_strict.py --lang 0 0BOOK_LANG) --config config/qa_rules.yml --baseline-init
 
 .PHONY: dashboard
 dashboard:
