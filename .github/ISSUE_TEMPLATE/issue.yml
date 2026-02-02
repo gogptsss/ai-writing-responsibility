@@ -1,0 +1,36 @@
+name: 📌 Issue / Question / Teaching Use
+description: Ask a question, report an issue, or raise a teaching-related concern
+title: "[Issue]: "
+labels: ["needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This project treats issues as part of its **teaching and governance system**.
+        Please read the questions carefully before submitting.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What is the issue or question?
+      description: Describe the problem in plain language.
+      placeholder: "I tried to run make qa BOOK_LANG=zh and got..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: What were you trying to do? (learning, publishing, teaching, maintaining)
+      placeholder: "I am a learner / teacher / maintainer..."
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: responsibility
+    attributes:
+      label: Responsibility acknowledgement
+      options:
+        - label: I understand that AI assistance does not remove human responsibility
+          required: true
