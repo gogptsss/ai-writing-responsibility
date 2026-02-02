@@ -32,3 +32,6 @@ This project follows [Semantic Versioning](https://semver.org/).
 - **Chore:** add help target
 - **Chore:** rename merged: to merged_out.md (windows-safe)
 
+
+## Unreleased
+- Verified reproducible zh build on CentOS Stream 9 (CRB + pandoc + xelatex + xeCJK + ctex).
