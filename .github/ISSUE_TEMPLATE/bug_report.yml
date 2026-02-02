@@ -1,0 +1,58 @@
+name: 🐞 Bug / Problem Report
+description: Report a problem or something that does not work as expected
+title: "[Bug] "
+labels: ["bug"]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a problem.
+        Please fill out the form below so we can understand and reproduce it.
+
+  - type: textarea
+    id: what_happened
+    attributes:
+      label: What happened?
+      description: Describe the problem you encountered.
+      placeholder: "Tell us what you did and what went wrong."
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect to happen?
+      placeholder: "Describe the expected behavior."
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: How can we reproduce it?
+      description: List the exact steps to reproduce the issue.
+      placeholder: |
+        1. Run command ...
+        2. See error ...
+    validations:
+      required: true
+
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: OS / version / command used
+      placeholder: "e.g. CentOS Stream 9, pandoc 2.14"
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: responsibility
+    attributes:
+      label: Responsibility
+      options:
+        - label: I have checked the documentation and existing issues
+          required: true
+        - label: I understand this project requires reproducible steps
+          required: true
