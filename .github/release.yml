@@ -1,0 +1,174 @@
+name: "ACRE Publishing OS – Release"
+description: |
+  This form is used to create a **publishable release**.
+  All checklist items must be satisfied before publishing.
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## 📦 Publication Release Gate
+
+        This project treats **publishing as a responsibility**, not a button click.
+        Please complete the checklist below truthfully.
+
+  # -----------------------------
+  # Version info
+  # -----------------------------
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: "Release tag (e.g. v0.1.3)"
+      placeholder: "v0.x.y"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: release_type
+    attributes:
+      label: Release Type
+      options:
+        - Publishable release
+        - Draft / preview
+        - Internal / teaching use
+    validations:
+      required: true
+
+  # -----------------------------
+  # Content & authorship
+  # -----------------------------
+  - type: checkboxes
+    id: content_authorship
+    attributes:
+      label: 🧠 Content & Authorship
+      description: "Content ownership and responsibility"
+      options:
+        - label: Source-of-truth language is explicitly defined
+          required: true
+        - label: Non-source languages are controlled derivatives
+          required: true
+        - label: AI-generated content has been reviewed by a human author
+          required: true
+        - label: Core concepts and judgments appear in main text (not appendices)
+          required: true
+
+  # -----------------------------
+  # Structure & expression
+  # -----------------------------
+  - type: checkboxes
+    id: structure_expression
+    attributes:
+      label: 🧱 Structure & Expression
+      description: "Book-level structural integrity"
+      options:
+        - label: Table of Contents is complete and correct
+          required: true
+        - label: All figures and tables have captions
+          required: true
+        - label: All important figures/tables are referenced in text
+          required: true
+        - label: No decorative-only figures or tables
+          required: true
+        - label: Appendices do not block main-text understanding
+          required: true
+
+  # -----------------------------
+  # Figures, tables & POD safety
+  # -----------------------------
+  - type: checkboxes
+    id: layout_pod
+    attributes:
+      label: 📐 Figures, Tables & POD Safety
+      description: "Print-on-demand readiness"
+      options:
+        - label: No hand-written figure or table numbers
+          required: true
+        - label: No figures are split across pages in PDF
+          required: true
+        - label: No tables have separated headers and bodies
+          required: true
+        - label: Tables have ≤ 6 columns (or are moved to appendices)
+          required: true
+        - label: List of Figures generated (if applicable)
+        - label: List of Tables generated (if applicable)
+
+  # -----------------------------
+  # Build & QA
+  # -----------------------------
+  - type: checkboxes
+    id: build_qa
+    attributes:
+      label: 🛠 Build & QA
+      description: "Quality gates"
+      options:
+        - label: make qa passed
+          required: true
+        - label: make qa-strict passed
+          required: true
+        - label: PDF successfully generated
+          required: true
+        - label: EPUB successfully generated
+          required: true
+        - label: No unexplained build errors or warnings
+          required: true
+
+  # -----------------------------
+  # Reproducibility
+  # -----------------------------
+  - type: checkboxes
+    id: reproducibility
+    attributes:
+      label: 🔁 Reproducibility
+      description: "Future-proofing the release"
+      options:
+        - label: Git tag created for this release
+          required: true
+        - label: Offline git bundle generated
+          required: true
+        - label: Build reproducible on another machine
+          required: true
+        - label: Build commands and environment can be explained
+          required: true
+
+  # -----------------------------
+  # Artifacts
+  # -----------------------------
+  - type: textarea
+    id: artifacts
+    attributes:
+      label: 📦 Release Artifacts
+      description: "List the files attached to this release"
+      placeholder: |
+        - ACRE_Publishing_OS_zh_v0.1.3.pdf
+        - ACRE_Publishing_OS_zh_v0.1.3.epub
+        - ai-writing-responsibility_v0.1.3.bundle
+    validations:
+      required: true
+
+  # -----------------------------
+  # Final gate
+  # -----------------------------
+  - type: checkboxes
+    id: final_gate
+    attributes:
+      label: 🔒 Final Release Gate
+      description: "All conditions below must be true"
+      options:
+        - label: Result is reproducible
+          required: true
+        - label: Process is explainable
+          required: true
+        - label: Responsibility is explicitly held
+          required: true
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+        ## ✅ Release Declaration
+
+        By submitting this release, you confirm that:
+        - This version can be reproduced in the future
+        - Its publishing decisions can be explained
+        - Responsibility for this release is clearly owned
