@@ -1,100 +1,206 @@
 
-# ACRE 出版基础设施 v2.0（Template Repo）
+# ACRE Publishing OS  
+## A Responsible, Reproducible Human–AI Publishing System
 
-v2.0 目标：
-- ✅ Hard QA 统一入口：`scripts/qa_strict.py`
-- ✅ 多语言同源：`manuscript/zh` + `manuscript/en`
-- ✅ AI 写作 CLI：`acre-ai draft ch05`
-- ✅ CI：push/PR 自动构建 + 严苛 QA + artifacts
+ACRE Publishing OS is an open, reproducible publishing system designed
+for **human authorship in the age of AI**.
 
-## 快速开始
-
-### 1) 依赖（本地）
-- Git
-- Python 3
-- Pandoc
-- XeLaTeX（PDF）
-- Java（EPUBCheck）
-- poppler-utils（pdffonts）
-
-Ubuntu/WSL:
-```bash
-sudo apt-get update
-sudo apt-get install -y git python3 make pandoc   texlive-xetex texlive-fonts-recommended texlive-latex-recommended   fonts-noto-cjk default-jre poppler-utils
-```
-
-### 2) 构建（默认中文）
-```bash
-make all
-```
-
-### 3) 构建英文
-```bash
-make LANG=en all
-```
-
-### 4) AI 草稿（不会污染主稿）
-```bash
-./bin/acre-ai draft ch05 --lang zh --from outline
-```
-
-## 关键命令
-
-- `make merge`：合并章节（按 chNN 文件名排序）
-- `make qa`：L1 轻量 QA
-- `make qa-strict`：L1 + EPUBCheck + PDF 字体嵌入 + 图片 DPI
-- `make all`：qa-strict + pdf + epub + docx
-
-生成日期：2026-01-29
-
-
-## v2.1 新增
-- YAML 可配置严苛 QA：`config/qa_rules.yml` + `config/language_exceptions.yml`
-- acre-ai 章节流水线：outline → draft → review → apply
-
-
-## v2.2 新增
-- QA 分组 + 严重级别（warn/fail/off）
-- glob 白名单/黑名单过滤（** 支持）
-
-
-## v2.3 新增
-- 每条规则独立 severity（fail|warn|off）
-- Baseline 基线快照（只允许变好）
-- JSON 报告输出（build/<lang>/qa_report.json）
-cd ~/sara
-cat > README.md <<'EOF'
-# ACRE Publishing OS v2
-
-**ACRE Publishing OS v2** is a production-grade, AI-assisted book publishing pipeline with **strict QA gates**, **multi-language single source**, and **multi-format output** (PDF / EPUB / DOCX).
-
-It is designed for authors, publishers, and teams who treat book publishing as **engineering**, not ad-hoc document export.
+It treats writing, publishing, governance, teaching, and maintenance
+as **first-class system components**, not afterthoughts.
 
 ---
 
-## 🚀 What This Is
+## 📌 What This Repository Is
 
-ACRE is not a demo.
+This repository is:
 
-It is a **fully working publishing operating system**, validated end-to-end on real servers and CI:
+- 📘 A **real, working example** of the ACRE Publishing OS
+- 🧠 A **teaching-ready system** (not just a codebase)
+- 🧭 A **governed project** with explicit responsibility boundaries
+- 🤖 A **human–AI co-authoring environment**, with rules
 
-- ✅ Markdown → PDF / EPUB / DOCX
-- ✅ zh / en multi-language from one source tree
-- ✅ Strict, configurable QA gates
-- ✅ AI-assisted writing workflow (without polluting main manuscript)
-- ✅ GitHub Actions CI + GitHub Pages publication dashboard
+This repository is **not**:
 
-**Live publication readiness dashboard:**  
-👉 https://sara-protocol.github.io/sara/
+- ❌ A generic AI writing tool
+- ❌ A prompt collection
+- ❌ A “magic automation” system
 
 ---
 
-## ✨ Core Features
+## 🚀 Quick Start (You Only Need 3 Things)
 
-### 📘 Multi-format Publishing
-- PDF (XeLaTeX, font-embedded)
-- EPUB (EPUBCheck-verified)
-- DOCX (for editors & reviewers)
+> If you remember only **three sentences**, remember these:
 
-### 🌍 Multi-language, Single Source
-- 
+1. **Chinese (zh) is the sovereign text.**  
+   English (en) is a *controlled derivative* and can be enabled or disabled.
+2. **Nothing is “publishable” until it passes QA and baseline checks.**
+3. **AI can write drafts, but humans remain responsible.**
+
+---
+
+### 🔧 Minimal Setup
+
+```bash
+git clone https://github.com/gogptsss/ai-writing-responsibility.git
+cd ai-writing-responsibility
+````
+
+Run QA (Chinese):
+
+```bash
+make qa BOOK_LANG=zh
+```
+
+Strict QA + publishable formats:
+
+```bash
+make qa-strict BOOK_LANG=zh
+```
+
+If successful, you will see:
+
+```text
+build/zh/book.pdf
+build/zh/book.epub
+```
+
+---
+
+## 🧱 Repository Structure (Human Explanation)
+
+```text
+manuscript/        # Source manuscripts (zh = primary, en = derived)
+scripts/           # Build, QA, dashboard scripts
+config/            # QA rules, pandoc / LaTeX config
+build/             # Generated outputs (ignored by Git)
+dist/              # Release-ready artifacts
+docs/              # Whitepaper, appendices, teaching materials
+```
+
+> **Rule of thumb:**
+> If you didn’t run a command to generate it, it probably doesn’t belong in `build/`.
+
+---
+
+## 🧭 Governance / Teaching / Maintainer Pack (Official Release)
+
+This project ships its **governance, teaching, and maintainer practices**
+as a **first-class release artifact**, not scattered documents.
+
+📦 **Download the Governance Pack (v1):**
+[https://github.com/gogptsss/ai-writing-responsibility/releases/tag/governance-v1](https://github.com/gogptsss/ai-writing-responsibility/releases/tag/governance-v1)
+
+Included:
+
+* Teaching Appendix A & B
+  *(Quick Start + Grading Cards)*
+* Governance Appendix
+  *(Maintainer Playbook)*
+* Maintainer execution cards
+* AI prompts for responsible maintenance
+
+> This release contains **no code changes**.
+> It defines **how responsibility is practiced**.
+
+---
+
+## 📘 Book / Whitepaper Mapping
+
+This repository directly maps to the book:
+
+> **ACRE Publishing OS · Operational Whitepaper**
+
+| Repository          | Book                           |
+| ------------------- | ------------------------------ |
+| Quick Start         | Part III – End-to-End Practice |
+| Governance Pack     | Appendix A / B                 |
+| Maintainer Playbook | Governance Appendix            |
+| QA / Baseline       | Publishing Gates               |
+
+The book is **derived from this repository**, not the other way around.
+
+---
+
+## 🧠 Human–AI Collaboration Principles (Short Version)
+
+* AI may generate drafts.
+* AI may assist with translation.
+* AI may help with structure.
+
+**AI may not:**
+
+* Decide publication readiness
+* Override QA baselines
+* Take responsibility
+
+Responsibility is always **human-held** and **system-enforced**.
+
+---
+
+## 👩‍🏫 For Teaching / Classroom Use
+
+This repository is designed to be:
+
+* Forked for coursework
+* Used in writing / publishing classes
+* Evaluated using grading cards (Appendix B)
+
+Students are graded on:
+
+* Reproducibility
+* QA compliance
+* Clarity of authorship responsibility
+
+---
+
+## 🛠 Maintainers
+
+Maintainers are expected to:
+
+* Enforce QA gates
+* Reject non-reproducible changes
+* Maintain human responsibility boundaries
+
+📘 See the **Maintainer Playbook** in the Governance Pack.
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome **within governance rules**.
+
+Before submitting:
+
+* Read the Governance Pack
+* Understand QA requirements
+* Accept responsibility boundaries
+
+Pull requests that bypass governance **will not be merged**.
+
+---
+
+## 📜 License
+
+Code and documentation are released under the project’s open license.
+Governance materials may have additional attribution requirements.
+See LICENSE for details.
+
+---
+
+## 📬 Final Note
+
+This project is an experiment in **responsible publishing**, not speed.
+
+If you are looking for:
+
+* shortcuts → this is not for you
+* automation without accountability → this is not for you
+
+If you care about:
+
+* authorship
+* responsibility
+* reproducibility
+
+Welcome.
+
